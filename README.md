@@ -18,7 +18,7 @@ INSTALLED_APPS = [
 
 ## CHANGES ##
 
-### dev
+### 0.1.1
 
 * added missing `on_delete` on HistoryRow.history field
 
