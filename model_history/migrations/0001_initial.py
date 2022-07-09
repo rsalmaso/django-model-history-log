@@ -60,7 +60,7 @@ class Migration(migrations.Migration):
                 ('last_modified_at', fluo.db.models.fields.ModificationDateTimeField(blank=True, default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('fields', model_history.fields.JSONField(default={}, verbose_name='fields')),
                 ('updated', model_history.fields.JSONField(default={}, verbose_name='updated fields')),
-                ('history', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='rows', to='model_history.History', verbose_name='history')),
+                ('history', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='rows', to='model_history.History', verbose_name='history')),
             ],
             options={
                 'base_manager_name': 'objects',

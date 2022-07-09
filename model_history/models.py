@@ -160,6 +160,7 @@ class HistoryRow(TimestampModel):
         db_index=True,
         blank=True,
         null=True,
+        on_delete=models.SET_NULL,
         related_name="rows",
         verbose_name=_("history"),
     )
