@@ -93,7 +93,7 @@ You must rely on it's `pk` value or you should check for `logs`.
 
 ## CHANGES ##
 
-### dev
+### 0.2.0
 
 * Rename project to django-model-history-log (sorry, no migration path)
 * Reformat all codebase with black
