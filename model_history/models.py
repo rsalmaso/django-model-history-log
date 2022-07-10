@@ -51,8 +51,6 @@ class HistoryManager(models.Manager.from_queryset(HistoryQuerySet)):
 
 
 class History(TimestampModel):
-    objects = HistoryManager()
-
     app_label = models.CharField(
         max_length=100,
     )
@@ -73,6 +71,8 @@ class History(TimestampModel):
     source = GenericForeignKey(
         "source_type", "source_id",
     )
+
+    objects = HistoryManager()
 
     class Meta:
         base_manager_name = "objects"
@@ -102,7 +102,7 @@ class History(TimestampModel):
             super().save(*args, **kwargs)
 
         try:
-            prev_fields = self.rows.last().fields
+            prev_fields = self.logs.last().fields
         except AttributeError:
             save_first_time, updated_fields = True, {}
         else:
@@ -110,12 +110,12 @@ class History(TimestampModel):
 
         if save_first_time or updated_fields:
             super().save(update_fields=["last_modified_at"])
-            row = HistoryRow(
+            log = HistoryLog(
                 history=self,
                 fields=current_fields,
                 updated=updated_fields,
             )
-            row.save(*args, **kwargs)
+            log.save(*args, **kwargs)
 
     def get_serializer_class(self, fields_opt=None, exclude_opt=None):
         if not fields_opt and not exclude_opt:
@@ -144,24 +144,22 @@ class History(TimestampModel):
         return updated_fields
 
 
-class HistoryRowQuerySet(models.QuerySet):
+class HistoryLogQuerySet(models.QuerySet):
     pass
 
 
-class HistoryRowManager(models.Manager.from_queryset(HistoryQuerySet)):
+class HistoryLogManager(models.Manager.from_queryset(HistoryQuerySet)):
     pass
 
 
-class HistoryRow(TimestampModel):
-    objects = HistoryRowManager()
-
+class HistoryLog(TimestampModel):
     history = models.ForeignKey(
         History,
         db_index=True,
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
-        related_name="rows",
+        related_name="logs",
         verbose_name=_("history"),
     )
     fields = JSONField(
@@ -175,11 +173,13 @@ class HistoryRow(TimestampModel):
         verbose_name=_("updated fields"),
     )
 
+    objects = HistoryLogManager()
+
     class Meta:
         base_manager_name = "objects"
         ordering = ["-created_at"]
-        verbose_name = _("row")
-        verbose_name_plural = _("rows")
+        verbose_name = _("log")
+        verbose_name_plural = _("logs")
 
     def __str__(self):
         return gettext("History for {obj} at {tm}").format(

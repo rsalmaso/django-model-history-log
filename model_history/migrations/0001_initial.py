@@ -53,20 +53,20 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='HistoryRow',
+            name='HistoryLog',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', fluo.db.models.fields.CreationDateTimeField(blank=True, default=django.utils.timezone.now, editable=False, verbose_name='created')),
                 ('last_modified_at', fluo.db.models.fields.ModificationDateTimeField(blank=True, default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('fields', model_history.fields.JSONField(default={}, verbose_name='fields')),
                 ('updated', model_history.fields.JSONField(default={}, verbose_name='updated fields')),
-                ('history', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='rows', to='model_history.History', verbose_name='history')),
+                ('history', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='logs', to='model_history.History', verbose_name='history')),
             ],
             options={
                 'base_manager_name': 'objects',
-                'verbose_name_plural': 'rows',
+                'verbose_name_plural': 'logs',
                 'ordering': ['-created_at'],
-                'verbose_name': 'row',
+                'verbose_name': 'log',
             },
         ),
         migrations.AlterUniqueTogether(

@@ -12,13 +12,13 @@ with io.open("README.md", "rt", encoding="utf-8") as fp:
 setup(
     packages=find_packages(),
     include_package_data=True,
-    name="django-model-history",
+    name="django-model-history-log",
     version=model_history.__version__,
     description="Save model history",
     long_description=long_description,
     author=model_history.__author__,
     author_email=model_history.__email__,
-    url="https://bitbucket.org/rsalmaso/django-model-history",
+    url="https://bitbucket.org/rsalmaso/django-model-history-log",
     license="MIT",
     classifiers=[
         "Development Status :: 5 - Production/Stable",

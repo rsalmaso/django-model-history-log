@@ -24,4 +24,4 @@ from django.utils.translation import gettext_lazy as _
 
 class ModelHistoryConfig(AppConfig):
     name = "model_history"
-    verbose_name = _("History")
+    verbose_name = _("Model History Log")

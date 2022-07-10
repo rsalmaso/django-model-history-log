@@ -26,18 +26,18 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from .compat import DjangoJSONEncoder
-from .models import History, HistoryRow
+from .models import History, HistoryLog
 
 
-class HistoryRowForm(forms.ModelForm):
+class HistoryLogForm(forms.ModelForm):
     class Meta:
         exclude = ["created_at", "last_modified_at", "fields", "updated"]
 
 
-class HistoryRowInline(admin.TabularInline):
+class HistoryLogInline(admin.TabularInline):
     extra = 0
-    form = HistoryRowForm
-    model = HistoryRow
+    form = HistoryLogForm
+    model = HistoryLog
     readonly_fields = ["_fields", "_updated"]
 
     def _pretty(self, data):
@@ -63,7 +63,7 @@ class HistoryForm(forms.ModelForm):
 @admin.register(History)
 class HistoryAdmin(admin.ModelAdmin):
     form = HistoryForm
-    inlines = [HistoryRowInline]
+    inlines = [HistoryLogInline]
     list_filter = ["app_label", "model"]
     readonly_fields = ["created_at", "last_modified_at", "app_label", "model", "source_id"]
     search_fields = ["source_type", "source_id"]

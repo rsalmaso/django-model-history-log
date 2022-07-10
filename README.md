@@ -1,4 +1,4 @@
-# django-model-history #
+# django-model-history-log #
 
 Register fields updates.
 
@@ -17,6 +17,10 @@ INSTALLED_APPS = [
 ```
 
 ## CHANGES ##
+
+### dev
+
+* Rename project to django-model-history-log (sorry, no migration path)
 
 ### 0.1.1
 
