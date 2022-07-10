@@ -27,6 +27,7 @@ INSTALLED_APPS = [
 * Remove default ordering, use only in admin
 * Add register/unregister actions
 * Add HistoryQuerySet.fetch api
+* Save str(source) as {History,HistoryLog}.label
 
 ### 0.1.1
 

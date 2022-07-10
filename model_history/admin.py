@@ -40,8 +40,8 @@ class HistoryLogInline(admin.TabularInline):
     extra = 0
     form = HistoryLogForm
     model = HistoryLog
-    readonly_fields = ["_fields", "_updated"]
     ordering = ["-created_at"]
+    readonly_fields = ["label", "_fields", "_updated"]
 
     def _pretty(self, data):
         pretty_data = json.dumps(data, sort_keys=True, indent=2, cls=DjangoJSONEncoder)
@@ -67,5 +67,5 @@ class HistoryAdmin(admin.ModelAdmin):
     inlines = [HistoryLogInline]
     list_filter = ["app_label", "model"]
     ordering = ["-created_at"]
-    readonly_fields = ["created_at", "last_modified_at", "app_label", "model", "source_id"]
+    readonly_fields = ["created_at", "label", "last_modified_at", "app_label", "model", "source_id"]
     search_fields = ["source_type", "source_id"]

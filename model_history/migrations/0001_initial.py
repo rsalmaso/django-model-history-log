@@ -55,6 +55,7 @@ class Migration(migrations.Migration):
                 ),
                 ("app_label", models.CharField(max_length=100)),
                 ("model", models.CharField(max_length=100)),
+                ("label", models.CharField(max_length=255)),
                 ("source_id", models.PositiveIntegerField(verbose_name="source id")),
                 (
                     "source_type",
@@ -89,6 +90,7 @@ class Migration(migrations.Migration):
                         blank=True, default=django.utils.timezone.now, editable=False, verbose_name="modified"
                     ),
                 ),
+                ("label", models.CharField(max_length=255)),
                 (
                     "fields",
                     model_history.fields.JSONField(

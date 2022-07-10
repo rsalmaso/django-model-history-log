@@ -84,6 +84,9 @@ class History(TimestampModel):
     model = models.CharField(
         max_length=100,
     )
+    label = models.CharField(
+        max_length=255,
+    )
     source_type = models.ForeignKey(
         ContentType,
         db_index=True,
@@ -108,8 +111,7 @@ class History(TimestampModel):
         verbose_name_plural = _("Histories")
 
     def __str__(self):
-        fmt = "{source} [{app_label}.{model} {id}]" if self.source else "{app_label}.{model} {id}"
-        return fmt.format(source=self.source, app_label=self.app_label, model=self.model, id=self.source_id)
+        return f"{self.label} [{self.app_label}.{self.model} {self.source_id}]"
 
     @transaction.atomic
     def save(self, fields=None, exclude=None, serializer_class=None, *args, **kwargs):
@@ -135,11 +137,13 @@ class History(TimestampModel):
             updated_fields = self.get_updated_fields(prev_fields, current_fields)
 
         if save_first_time or updated_fields:
-            super().save(update_fields=["last_modified_at"])
+            self.label = str(self.source)
+            super().save(update_fields=["label", "last_modified_at"])
             log = HistoryLog(
                 history=self,
                 fields=current_fields,
                 updated=updated_fields,
+                label=self.label,
             )
             log.save(*args, **kwargs)
 
@@ -212,6 +216,9 @@ class HistoryLog(TimestampModel):
         related_name="logs",
         verbose_name=_("history"),
     )
+    label = models.CharField(
+        max_length=255,
+    )
     fields = _fields.JSONField(
         encoder=DjangoJSONEncoder,
         verbose_name=_("fields"),
@@ -230,6 +237,6 @@ class HistoryLog(TimestampModel):
 
     def __str__(self):
         return gettext("History for {obj} at {tm}").format(
-            obj=self.history.source,
+            obj=self.label,
             tm=self.created_at,
         )
