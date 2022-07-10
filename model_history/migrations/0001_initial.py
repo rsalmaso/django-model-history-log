@@ -20,6 +20,7 @@
 
 from __future__ import annotations
 
+import django.core.serializers.json
 import django.db.models.deletion
 import django.utils.timezone
 from django.db import migrations, models
@@ -89,8 +90,20 @@ class Migration(migrations.Migration):
                         blank=True, default=django.utils.timezone.now, editable=False, verbose_name="modified"
                     ),
                 ),
-                ("fields", model_history.fields.JSONField(default={}, verbose_name="fields")),
-                ("updated", model_history.fields.JSONField(default={}, verbose_name="updated fields")),
+                (
+                    "fields",
+                    model_history.fields.JSONField(
+                        default=dict, encoder=django.core.serializers.json.DjangoJSONEncoder, verbose_name="fields"
+                    ),
+                ),
+                (
+                    "updated",
+                    model_history.fields.JSONField(
+                        default=dict,
+                        encoder=django.core.serializers.json.DjangoJSONEncoder,
+                        verbose_name="updated fields",
+                    ),
+                ),
                 (
                     "history",
                     models.ForeignKey(

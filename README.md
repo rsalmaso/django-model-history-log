@@ -23,6 +23,7 @@ INSTALLED_APPS = [
 * Rename project to django-model-history-log (sorry, no migration path)
 * Reformat all codebase with black
 * Update isort/flake8 config
+* Use django JSONField
 
 ### 0.1.1
 

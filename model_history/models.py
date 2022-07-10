@@ -172,12 +172,10 @@ class HistoryLog(TimestampModel):
     )
     fields = _fields.JSONField(
         encoder=DjangoJSONEncoder,
-        options={"sort_keys": True, "indent": 2},
         verbose_name=_("fields"),
     )
     updated = _fields.JSONField(
         encoder=DjangoJSONEncoder,
-        options={"sort_keys": True, "indent": 2},
         verbose_name=_("updated fields"),
     )
 

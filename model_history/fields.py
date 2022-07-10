@@ -20,13 +20,9 @@
 
 from __future__ import annotations
 
-import json
-
-from django.core.exceptions import ValidationError
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.utils import timezone
-from django.utils.encoding import smart_str
 
 
 class CreationDateTimeField(models.DateTimeField):
@@ -50,63 +46,8 @@ class ModificationDateTimeField(CreationDateTimeField):
         return "DateTimeField"
 
 
-class JSONField(models.TextField):
-    """
-    Field that stores python structures as JSON strings on database.
-    """
-
+class JSONField(models.JSONField):
     def __init__(self, *args, **kwargs):
-        kwargs.setdefault("default", {})
-        self.encoder = kwargs.pop("encoder", DjangoJSONEncoder)
-        self.options = kwargs.pop("options", None)
+        kwargs.setdefault("default", dict)
+        kwargs.setdefault("encoder", DjangoJSONEncoder)
         super().__init__(*args, **kwargs)
-
-    def from_db_value(self, value, expression, connection, context):
-        return self.to_python(value)
-
-    def to_python(self, value):
-        """
-        Convert the input JSON value into python structures, raises
-        django.core.exceptions.ValidationError if the data can't be converted.
-        """
-        if self.blank and not value:
-            return {}
-        value = value or "{}"
-        if isinstance(value, bytes):
-            value = str(value, "utf-8")
-        if isinstance(value, str):
-            try:
-                return json.loads(value)
-            except Exception as err:
-                raise ValidationError(str(err))
-        else:
-            return value
-
-    def validate(self, value, model_instance):
-        """
-        Check value is a valid JSON string, raise ValidationError on error.
-        """
-        if isinstance(value, str):
-            super().validate(value, model_instance)
-            try:
-                json.loads(value)
-            except Exception as err:
-                raise ValidationError(str(err))
-
-    def get_prep_value(self, value):
-        """Convert value to JSON string before save"""
-        try:
-            options = {"cls": self.encoder} if self.encoder else {}
-            if self.options:
-                options.update(self.options)
-            return json.dumps(value, **options)
-        except Exception as err:
-            raise ValidationError(str(err))
-
-    def value_to_string(self, obj):
-        """Return value from object converted to string properly"""
-        return smart_str(self.get_prep_value(self._get_val_from_obj(obj)))
-
-    def value_from_object(self, obj):
-        """Return value dumped to string."""
-        return self.get_prep_value(self._get_val_from_obj(obj))
