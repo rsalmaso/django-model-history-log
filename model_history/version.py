@@ -36,6 +36,6 @@ def get_version(version=None):
     sub = ""
     if version[3] != "final":
         mapping = {"alpha": "a", "beta": "b", "rc": "c"}
-        sub = mapping[version[3]] + str(version[4])
+        sub = f"{mapping[version[3]]}{version[4]}"
 
-    return str(main + sub)
+    return f"{main}{sub}"

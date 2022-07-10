@@ -44,10 +44,8 @@ class HistoryLogInline(admin.TabularInline):
     ordering = ["-created_at"]
 
     def _pretty(self, data):
-        response = """<pre style="white-space: pre-wrap;">{response}</pre>""".format(
-            response=json.dumps(data, sort_keys=True, indent=2, cls=DjangoJSONEncoder),
-        )
-        return mark_safe(response)
+        pretty_data = json.dumps(data, sort_keys=True, indent=2, cls=DjangoJSONEncoder)
+        return mark_safe(f"""<pre style="white-space: pre-wrap;">{pretty_data}</pre>""")
 
     @admin.display(description=_("fields"))
     def _fields(self, obj):
