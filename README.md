@@ -28,6 +28,7 @@ INSTALLED_APPS = [
 * Add register/unregister actions
 * Add HistoryQuerySet.fetch api
 * Save str(source) as {History,HistoryLog}.label
+* Add en translations
 
 ### 0.1.1
 
