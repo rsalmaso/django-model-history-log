@@ -21,6 +21,8 @@ INSTALLED_APPS = [
 ### dev
 
 * Rename project to django-model-history-log (sorry, no migration path)
+* Reformat all codebase with black
+* Update isort/flake8 config
 
 ### 0.1.1
 

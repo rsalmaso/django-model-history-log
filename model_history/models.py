@@ -69,7 +69,8 @@ class History(TimestampModel):
         verbose_name=_("source id"),
     )
     source = GenericForeignKey(
-        "source_type", "source_id",
+        "source_type",
+        "source_id",
     )
 
     objects = HistoryManager()
@@ -77,7 +78,7 @@ class History(TimestampModel):
     class Meta:
         base_manager_name = "objects"
         ordering = ["-created_at"]
-        unique_together = (["app_label", "model", "source_id"])
+        unique_together = ["app_label", "model", "source_id"]
         verbose_name = _("History")
         verbose_name_plural = _("Histories")
 

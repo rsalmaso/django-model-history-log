@@ -33,9 +33,9 @@ class JSONField(models.TextField):
     """
 
     def __init__(self, *args, **kwargs):
-        kwargs.setdefault('default', {})
-        self.encoder = kwargs.pop('encoder', DjangoJSONEncoder)
-        self.options = kwargs.pop('options', None)
+        kwargs.setdefault("default", {})
+        self.encoder = kwargs.pop("encoder", DjangoJSONEncoder)
+        self.options = kwargs.pop("options", None)
         super().__init__(*args, **kwargs)
 
     def from_db_value(self, value, expression, connection, context):
@@ -48,9 +48,9 @@ class JSONField(models.TextField):
         """
         if self.blank and not value:
             return {}
-        value = value or '{}'
+        value = value or "{}"
         if isinstance(value, bytes):
-            value = str(value, 'utf-8')
+            value = str(value, "utf-8")
         if isinstance(value, str):
             try:
                 return json.loads(value)
@@ -73,7 +73,7 @@ class JSONField(models.TextField):
     def get_prep_value(self, value):
         """Convert value to JSON string before save"""
         try:
-            options = {'cls': self.encoder} if self.encoder else {}
+            options = {"cls": self.encoder} if self.encoder else {}
             if self.options:
                 options.update(self.options)
             return json.dumps(value, **options)

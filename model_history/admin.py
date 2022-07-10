@@ -48,10 +48,12 @@ class HistoryLogInline(admin.TabularInline):
 
     def _fields(self, obj):
         return self._pretty(obj.fields)
+
     _fields.short_description = _("fields")
 
     def _updated(self, obj):
         return self._pretty(obj.updated)
+
     _updated.short_description = _("updated fields")
 
 

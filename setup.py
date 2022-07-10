@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
-from setuptools import setup, find_packages
-import io
 import model_history
 
+from setuptools import find_packages, setup
+
+import model_log
 
 with io.open("README.md", "rt", encoding="utf-8") as fp:
     long_description = fp.read()

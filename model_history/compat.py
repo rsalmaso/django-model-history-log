@@ -23,19 +23,22 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 __all__ = (
-    'CreationDateTimeField', 'ModificationDateTimeField', 'TimestampModel',
-    'DjangoJSONEncoder',
+    "CreationDateTimeField",
+    "ModificationDateTimeField",
+    "TimestampModel",
+    "DjangoJSONEncoder",
 )
 
 
 try:
     from fluo.db.models import CreationDateTimeField, ModificationDateTimeField, TimestampModel
 except ImportError:
+
     class CreationDateTimeField(models.DateTimeField):
         def __init__(self, *args, **kwargs):
-            kwargs.setdefault('editable', False)
-            kwargs.setdefault('blank', True)
-            kwargs.setdefault('default', timezone.now)
+            kwargs.setdefault("editable", False)
+            kwargs.setdefault("blank", True)
+            kwargs.setdefault("default", timezone.now)
             super().__init__(*args, **kwargs)
 
         def get_internal_type(self):
@@ -52,10 +55,10 @@ except ImportError:
 
     class TimestampModel(models.Model):
         created_at = CreationDateTimeField(
-            verbose_name=_('created'),
+            verbose_name=_("created"),
         )
         last_modified_at = ModificationDateTimeField(
-            verbose_name=_('modified'),
+            verbose_name=_("modified"),
         )
 
         class Meta:
