@@ -53,17 +53,24 @@ class TimestampModel(models.Model):
 
 
 class HistoryQuerySet(models.QuerySet):
-    pass
+    def fetch(self, instance):
+        source_type = ContentType.objects.get_for_model(instance)
+        source_id = instance.pk
+        try:
+            history = self.get(source_type=source_type, source_id=source_id)
+        except History.DoesNotExist:
+            history = self.model(
+                source_type=source_type,
+                source_id=source_id,
+                app_label=source_type.app_label,
+                model=source_type.model,
+            )
+        return history
 
 
 class HistoryManager(models.Manager.from_queryset(HistoryQuerySet)):
     def log(self, instance, exclude=None, serializer_class=None):
-        source_type = ContentType.objects.get_for_model(instance)
-        source_id = instance.pk
-        try:
-            history = History.objects.get(source_type=source_type, source_id=source_id)
-        except History.DoesNotExist:
-            history = History(source_type=source_type, source_id=source_id)
+        history = self.fetch(instance)
         history.save(exclude=exclude, serializer_class=serializer_class)
         return history
 

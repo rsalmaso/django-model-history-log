@@ -26,6 +26,7 @@ INSTALLED_APPS = [
 * Use django JSONField
 * Remove default ordering, use only in admin
 * Add register/unregister actions
+* Add HistoryQuerySet.fetch api
 
 ### 0.1.1
 
