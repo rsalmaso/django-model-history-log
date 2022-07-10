@@ -78,7 +78,6 @@ class History(TimestampModel):
     objects = HistoryManager()
 
     class Meta:
-        base_manager_name = "objects"
         ordering = ["-created_at"]
         unique_together = ["app_label", "model", "source_id"]
         verbose_name = _("History")
@@ -179,7 +178,6 @@ class HistoryLog(TimestampModel):
     objects = HistoryLogManager()
 
     class Meta:
-        base_manager_name = "objects"
         ordering = ["-created_at"]
         verbose_name = _("log")
         verbose_name_plural = _("logs")

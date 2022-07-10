@@ -67,7 +67,6 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={
-                "base_manager_name": "objects",
                 "verbose_name_plural": "Histories",
                 "ordering": ["-created_at"],
                 "verbose_name": "History",
@@ -104,7 +103,6 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={
-                "base_manager_name": "objects",
                 "verbose_name_plural": "logs",
                 "ordering": ["-created_at"],
                 "verbose_name": "log",
