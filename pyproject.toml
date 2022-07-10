@@ -1,3 +1,51 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-model-history-log"
+authors = [
+  { name="Raffaele Salmaso", email="raffaele@salmaso.org" },
+]
+description = "Save model history"
+dynamic = ["version"]
+readme = "README.md"
+license = { file="COPYING" }
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: Django",
+    "Framework :: Django :: 3.2",
+    "Framework :: Django :: 4.0",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+]
+dependencies = [
+    "django",
+    "djangorestframework"
+]
+
+[project.urls]
+"Homepage" = "https://pypi.org/project/django-model-history-log"
+"GitHub" = "https://github.com/rsalmaso/django-model-history-log"
+"Bug Tracker" = "https://github.com/rsalmaso/django-model-history-log/issues"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages]
+find = {}
+
+[tool.setuptools.dynamic]
+version = {attr = "model_history.__version__"}
+
 [tool.black]
 include = '\.pyi?$'
 exclude = '''
