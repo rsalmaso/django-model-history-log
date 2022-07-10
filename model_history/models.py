@@ -224,5 +224,5 @@ class HistoryLog(TimestampModel):
     def __str__(self):
         return gettext("History for {obj} at {tm}").format(
             obj=self.history.source,
-            tm=self.history.created_at,
+            tm=self.created_at,
         )
