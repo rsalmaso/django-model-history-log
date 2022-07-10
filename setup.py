@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
-import model_history
+from __future__ import annotations
+
+import io
 
 from setuptools import find_packages, setup
 
-import model_log
+import model_history
 
 with io.open("README.md", "rt", encoding="utf-8") as fp:
     long_description = fp.read()
@@ -23,14 +25,17 @@ setup(
     license="MIT",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
+        "Framework :: Django",
+        "Framework :: Django :: 3.2",
+        "Framework :: Django :: 4.0",
         "Intended Audience :: Developers",
         "Natural Language :: English",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.4",
-        "Programming Language :: Python :: 3.5",
-        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
     ],
     install_requires=["django", "djangorestframework"],
     zip_safe=False,
