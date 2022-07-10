@@ -70,7 +70,6 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "History",
                 "verbose_name_plural": "Histories",
-                "ordering": ["-created_at"],
                 "unique_together": {("app_label", "model", "source_id")},
             },
         ),
@@ -119,7 +118,7 @@ class Migration(migrations.Migration):
             options={
                 "verbose_name": "log",
                 "verbose_name_plural": "logs",
-                "ordering": ["-created_at"],
+                "ordering": ["created_at"],
             },
         ),
     ]

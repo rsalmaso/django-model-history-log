@@ -41,6 +41,7 @@ class HistoryLogInline(admin.TabularInline):
     form = HistoryLogForm
     model = HistoryLog
     readonly_fields = ["_fields", "_updated"]
+    ordering = ["-created_at"]
 
     def _pretty(self, data):
         response = """<pre style="white-space: pre-wrap;">{response}</pre>""".format(
@@ -69,5 +70,6 @@ class HistoryAdmin(admin.ModelAdmin):
     form = HistoryForm
     inlines = [HistoryLogInline]
     list_filter = ["app_label", "model"]
+    ordering = ["-created_at"]
     readonly_fields = ["created_at", "last_modified_at", "app_label", "model", "source_id"]
     search_fields = ["source_type", "source_id"]

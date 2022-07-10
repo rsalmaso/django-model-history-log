@@ -24,6 +24,7 @@ INSTALLED_APPS = [
 * Reformat all codebase with black
 * Update isort/flake8 config
 * Use django JSONField
+* Remove default ordering, use only in admin
 
 ### 0.1.1
 

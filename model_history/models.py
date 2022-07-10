@@ -84,7 +84,6 @@ class History(TimestampModel):
     objects = HistoryManager()
 
     class Meta:
-        ordering = ["-created_at"]
         unique_together = ["app_label", "model", "source_id"]
         verbose_name = _("History")
         verbose_name_plural = _("Histories")
@@ -110,7 +109,7 @@ class History(TimestampModel):
             super().save(*args, **kwargs)
 
         try:
-            prev_fields = self.logs.last().fields
+            prev_fields = self.logs.order_by("created_at").last().fields
         except AttributeError:
             save_first_time, updated_fields = True, {}
         else:
@@ -182,7 +181,7 @@ class HistoryLog(TimestampModel):
     objects = HistoryLogManager()
 
     class Meta:
-        ordering = ["-created_at"]
+        ordering = ["created_at"]
         verbose_name = _("log")
         verbose_name_plural = _("logs")
 
