@@ -49,15 +49,13 @@ class HistoryLogInline(admin.TabularInline):
         )
         return mark_safe(response)
 
+    @admin.display(description=_("fields"))
     def _fields(self, obj):
         return self._pretty(obj.fields)
 
-    _fields.short_description = _("fields")
-
+    @admin.display(description=_("updated fields"))
     def _updated(self, obj):
         return self._pretty(obj.updated)
-
-    _updated.short_description = _("updated fields")
 
 
 class HistoryForm(forms.ModelForm):
