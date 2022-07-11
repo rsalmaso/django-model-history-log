@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="History",
             fields=[
-                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
                 (
                     "created_at",
                     model_history.fields.CreationDateTimeField(
@@ -76,7 +76,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="HistoryLog",
             fields=[
-                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
                 (
                     "created_at",
                     model_history.fields.CreationDateTimeField(
