@@ -22,18 +22,24 @@ from __future__ import annotations
 
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-from django.db import transaction
+from django.core.serializers.json import DjangoJSONEncoder
+from django.db import models, transaction
 from django.utils.translation import gettext, gettext_lazy as _
-from fluo.db import models
 from rest_framework import serializers
 
-from .compat import TimestampModel
-from .fields import JSONField
+from . import fields as _fields
 
-try:
-    from fluo.utils.json import JSONEncoder as DjangoJSONEncoder
-except ImportError:
-    from django.core.serializers.json import DjangoJSONEncoder
+
+class TimestampModel(models.Model):
+    created_at = _fields.CreationDateTimeField(
+        verbose_name=_("created"),
+    )
+    last_modified_at = _fields.ModificationDateTimeField(
+        verbose_name=_("modified"),
+    )
+
+    class Meta:
+        abstract = True
 
 
 class HistoryQuerySet(models.QuerySet):
@@ -164,12 +170,12 @@ class HistoryLog(TimestampModel):
         related_name="logs",
         verbose_name=_("history"),
     )
-    fields = JSONField(
+    fields = _fields.JSONField(
         encoder=DjangoJSONEncoder,
         options={"sort_keys": True, "indent": 2},
         verbose_name=_("fields"),
     )
-    updated = JSONField(
+    updated = _fields.JSONField(
         encoder=DjangoJSONEncoder,
         options={"sort_keys": True, "indent": 2},
         verbose_name=_("updated fields"),

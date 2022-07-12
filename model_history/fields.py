@@ -23,10 +23,31 @@ from __future__ import annotations
 import json
 
 from django.core.exceptions import ValidationError
+from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
-from django.utils.encoding import smart_text
+from django.utils import timezone
+from django.utils.encoding import smart_str
 
-from .compat import DjangoJSONEncoder
+
+class CreationDateTimeField(models.DateTimeField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("editable", False)
+        kwargs.setdefault("blank", True)
+        kwargs.setdefault("default", timezone.now)
+        super().__init__(*args, **kwargs)
+
+    def get_internal_type(self):
+        return "DateTimeField"
+
+
+class ModificationDateTimeField(CreationDateTimeField):
+    def pre_save(self, model, add):
+        value = timezone.now()
+        setattr(model, self.attname, value)
+        return value
+
+    def get_internal_type(self):
+        return "DateTimeField"
 
 
 class JSONField(models.TextField):
@@ -84,7 +105,7 @@ class JSONField(models.TextField):
 
     def value_to_string(self, obj):
         """Return value from object converted to string properly"""
-        return smart_text(self.get_prep_value(self._get_val_from_obj(obj)))
+        return smart_str(self.get_prep_value(self._get_val_from_obj(obj)))
 
     def value_from_object(self, obj):
         """Return value dumped to string."""

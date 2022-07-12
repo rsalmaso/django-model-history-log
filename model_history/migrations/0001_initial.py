@@ -22,9 +22,9 @@ from __future__ import annotations
 
 import django.db.models.deletion
 import django.utils.timezone
-import fluo.db.models.fields
-import model_history.fields
 from django.db import migrations, models
+
+import model_history.fields
 
 
 class Migration(migrations.Migration):
@@ -42,13 +42,13 @@ class Migration(migrations.Migration):
                 ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
                 (
                     "created_at",
-                    fluo.db.models.fields.CreationDateTimeField(
+                    model_history.fields.CreationDateTimeField(
                         blank=True, default=django.utils.timezone.now, editable=False, verbose_name="created"
                     ),
                 ),
                 (
                     "last_modified_at",
-                    fluo.db.models.fields.ModificationDateTimeField(
+                    model_history.fields.ModificationDateTimeField(
                         blank=True, default=django.utils.timezone.now, editable=False, verbose_name="modified"
                     ),
                 ),
@@ -61,15 +61,16 @@ class Migration(migrations.Migration):
                         blank=True,
                         null=True,
                         on_delete=django.db.models.deletion.SET_NULL,
-                        to="contenttypes.ContentType",
+                        to="contenttypes.contenttype",
                         verbose_name="source content type",
                     ),
                 ),
             ],
             options={
+                "verbose_name": "History",
                 "verbose_name_plural": "Histories",
                 "ordering": ["-created_at"],
-                "verbose_name": "History",
+                "unique_together": {("app_label", "model", "source_id")},
             },
         ),
         migrations.CreateModel(
@@ -78,13 +79,13 @@ class Migration(migrations.Migration):
                 ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
                 (
                     "created_at",
-                    fluo.db.models.fields.CreationDateTimeField(
+                    model_history.fields.CreationDateTimeField(
                         blank=True, default=django.utils.timezone.now, editable=False, verbose_name="created"
                     ),
                 ),
                 (
                     "last_modified_at",
-                    fluo.db.models.fields.ModificationDateTimeField(
+                    model_history.fields.ModificationDateTimeField(
                         blank=True, default=django.utils.timezone.now, editable=False, verbose_name="modified"
                     ),
                 ),
@@ -97,19 +98,15 @@ class Migration(migrations.Migration):
                         null=True,
                         on_delete=django.db.models.deletion.SET_NULL,
                         related_name="logs",
-                        to="model_history.History",
+                        to="model_history.history",
                         verbose_name="history",
                     ),
                 ),
             ],
             options={
+                "verbose_name": "log",
                 "verbose_name_plural": "logs",
                 "ordering": ["-created_at"],
-                "verbose_name": "log",
             },
-        ),
-        migrations.AlterUniqueTogether(
-            name="history",
-            unique_together=set([("app_label", "model", "source_id")]),
         ),
     ]
