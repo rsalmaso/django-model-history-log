@@ -24,10 +24,20 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models, transaction
+from django.db.models.signals import m2m_changed, post_save, pre_delete
 from django.utils.translation import gettext, gettext_lazy as _
 from rest_framework import serializers
 
 from . import fields as _fields
+from .exceptions import HistoryAlreadyRegisteredException
+
+
+class Callback:
+    def __init__(self, exclude=None):
+        self.exclude = exclude
+
+    def __call__(self, instance, **kwargs):
+        History.objects.log(instance, exclude=self.exclude)
 
 
 class TimestampModel(models.Model):
@@ -59,6 +69,8 @@ class HistoryManager(models.Manager.from_queryset(HistoryQuerySet)):
 
 
 class History(TimestampModel):
+    AlreadyRegistered = HistoryAlreadyRegisteredException
+
     app_label = models.CharField(
         max_length=100,
     )
@@ -149,6 +161,30 @@ class History(TimestampModel):
             else:
                 updated_fields[key] = value
         return updated_fields
+
+    _registry = {}
+
+    @classmethod
+    def register(cls, sender, *, exclude=None):
+        if (callback := cls._registry.get(sender)) is not None:
+            raise History.AlreadyRegistered(
+                f"Model {sender._meta.app_label}.{sender._meta.model_name} was already registered."
+            )
+
+        callback = Callback(exclude=exclude)
+        cls._registry[sender] = callback
+        post_save.connect(callback, sender=sender)
+        pre_delete.connect(callback, sender=sender)
+        m2m_changed.connect(callback, sender=sender)
+
+    @classmethod
+    def unregister(cls, sender):
+        callback = cls._registry.pop(sender, None)
+        if callback is None:
+            return
+        post_save.disconnect(receiver=callback, sender=sender)
+        pre_delete.disconnect(receiver=callback, sender=sender)
+        m2m_changed.disconnect(receiver=callback, sender=sender)
 
 
 class HistoryLogQuerySet(models.QuerySet):

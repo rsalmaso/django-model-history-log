@@ -25,6 +25,7 @@ INSTALLED_APPS = [
 * Update isort/flake8 config
 * Use django JSONField
 * Remove default ordering, use only in admin
+* Add register/unregister actions
 
 ### 0.1.1
 
