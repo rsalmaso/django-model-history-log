@@ -15,7 +15,7 @@ INSTALLED_APPS = [
     ...
 ]
 ```
-and than run
+and then run
 
 ```python
 ./manage.py migrate
