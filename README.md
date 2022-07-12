@@ -2,8 +2,21 @@
 
 Register fields updates.
 
+> **WARNING**
+  This project currently relies on Django signals
+  (by default `post_save`, `pre_delete`, and `m2m_changed`),
+  so if you do some bulk action (ie via `queryset.update()`),
+  any action will not be recorded!
 
 ## Install
+
+Install package with
+
+```shell
+pip install django-model-history-log
+```
+
+## Configure
 
 Add `model_history.apps.ModelHistoryConfig` into your `INSTALLED_APPS`
 
@@ -20,8 +33,6 @@ and then run
 ```python
 ./manage.py migrate
 ```
-
-## Configure
 
 ### Register a model at startup
 
