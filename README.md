@@ -104,6 +104,10 @@ You must rely on it's `pk` value or you should check for `logs`.
 
 ## CHANGES ##
 
+### 0.2.1
+
+* Docs update
+
 ### 0.2.0
 
 * Rename project to django-model-history-log (sorry, no migration path)
